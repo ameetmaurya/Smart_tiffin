@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Smart Tiffin - Homely Meals Delivered</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Config for Tailwind -->
+  <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    brand: {
+                        50: '#fff7ed',
+                        100: '#ffedd5',
+                        500: '#f97316',
+                        600: '#ea580c',
+                        900: '#7c2d12',
+                    }
+                },
+                fontFamily: {
+                    sans: ['Poppins', 'sans-serif'],
+                },
+                animation: {
+                    'float': 'float 6s ease-in-out infinite',
+                    'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                },
+                keyframes: {
+                    float: {
+                        '0%, 100%': { transform: 'translateY(0)' },
+                        '50%': { transform: 'translateY(-20px)' },
+                    },
+                    fadeInUp: {
+                        '0%': { opacity: '0', transform: 'translateY(20px)' },
+                        '100%': { opacity: '1', transform: 'translateY(0)' },
+                    }
+                }
+            }
+        }
+    }
+  </script>
+
+  <style>
+    .blob-bg {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23FFEDD5' d='M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.6,-46.6C91.4,-34.1,98.2,-19.2,95.8,-4.9C93.4,9.5,81.8,23.3,70.8,35.4C59.8,47.5,49.3,57.9,37.6,65.7C25.9,73.5,13,78.7,-0.5,79.6C-14,80.5,-28,77.1,-40.5,70.1C-53,63.1,-64,52.5,-72.6,39.8C-81.2,27.1,-87.4,12.3,-86.3,-2.1C-85.1,-16.4,-76.7,-30.3,-66.2,-41.8C-55.7,-53.3,-43.2,-62.4,-30.2,-70.3C-17.2,-78.2,-3.7,-84.9,9.4,-83.4L22.5,-81.9Z' transform='translate(100 100)' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+    .scroll-hidden::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="font-sans text-gray-800 antialiased overflow-x-hidden">
+
+<!-- 1. Navbar (Glassmorphism) -->
+<nav class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-20 items-center">
+      <!-- Logo -->
+      <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+        <div class="bg-gradient-to-tr from-brand-500 to-yellow-500 text-white p-2.5 rounded-xl shadow-lg transform rotate-3">
+          <i class="fas fa-utensils text-xl"></i>
+        </div>
+        <span class="text-2xl font-bold tracking-tight text-gray-900">Smart<span class="text-brand-600">Tiffin</span></span>
+      </div>
+
+      <!-- Desktop Links -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#features" class="text-gray-600 hover:text-brand-600 font-medium transition">Features</a>
+        <a href="#how-it-works" class="text-gray-600 hover:text-brand-600 font-medium transition">How it Works</a>
+        <a href="#testimonials" class="text-gray-600 hover:text-brand-600 font-medium transition">Stories</a>
+        <div class="border-l border-gray-300 h-6"></div>
+        <a href="/login" class="text-brand-600 font-bold hover:text-brand-900 transition">Log In</a>
+        <a href="/register" class="bg-brand-600 hover:bg-brand-900 text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-brand-500/30 transition transform hover:-translate-y-0.5">
+          Get Started
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden">
+        <button class="text-gray-600 hover:text-brand-600 text-2xl">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- 2. Hero Section -->
+<section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-brand-50/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Text Content -->
+      <div class="z-10 animate-fade-in-up">
+                    <span class="inline-block py-1 px-3 rounded-full bg-brand-100 text-brand-600 text-sm font-bold tracking-wider mb-6">
+                        👋 SAY GOODBYE TO MESS FOOD
+                    </span>
+        <h1 class="text-5xl lg:text-7xl font-bold leading-tight text-gray-900 mb-6">
+          Homely Food, <br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-yellow-500">
+                            Delivered Daily.
+                        </span>
+        </h1>
+        <p class="text-lg text-gray-600 mb-8 leading-relaxed max-w-lg">
+          Craving "Ghar ka Khana"? We connect you with top-rated local moms & home cooks. Healthy, hygienic, and delivered right to your hostel door.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/register" class="px-8 py-4 bg-brand-600 text-white rounded-full font-bold text-center shadow-xl shadow-brand-500/40 hover:bg-brand-900 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+            Order Now <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="#how-it-works" class="px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-full font-bold text-center hover:bg-gray-50 hover:border-gray-300 transition flex items-center justify-center gap-2">
+            <i class="fas fa-play-circle text-brand-500"></i> See How it Works
+          </a>
+        </div>
+
+        <!-- Trust Indicators -->
+        <div class="mt-10 flex items-center gap-6 text-sm font-medium text-gray-500">
+          <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle text-green-500"></i> 100% Hygiene Verified
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle text-green-500"></i> Live Tracking
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Image -->
+      <div class="relative lg:h-[600px] w-full flex items-center justify-center blob-bg animate-float">
+        <!-- Main Plate Image -->
+        <img src="https://img.freepik.com/free-photo/delicious-indian-food-tray_23-2148723505.jpg?w=1000"
+             alt="Delicious Thali"
+             class="relative z-10 w-4/5 rounded-full shadow-2xl border-4 border-white object-cover aspect-square">
+
+        <!-- Floating Badge 1 -->
+        <div class="absolute top-20 right-10 bg-white p-4 rounded-2xl shadow-xl z-20 animate-bounce" style="animation-duration: 3s;">
+          <div class="flex items-center gap-3">
+            <div class="bg-green-100 p-2 rounded-full text-green-600">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 font-bold uppercase">Pure Veg</p>
+              <p class="font-bold text-gray-800">Available</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Badge 2 -->
+        <div class="absolute bottom-20 left-0 bg-white p-4 rounded-2xl shadow-xl z-20 animate-bounce" style="animation-duration: 4s;">
+          <div class="flex items-center gap-3">
+            <div class="bg-yellow-100 p-2 rounded-full text-yellow-600">
+              <i class="fas fa-star"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 font-bold uppercase">Top Rated</p>
+              <p class="font-bold text-gray-800">4.9/5 Stars</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Stats Section -->
+<div class="bg-brand-900 py-10">
+  <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+    <div class="p-4">
+      <div class="text-4xl font-bold mb-1 text-brand-500">50+</div>
+      <div class="text-sm opacity-80 uppercase tracking-wide">Home Cooks</div>
+    </div>
+    <div class="p-4 border-l border-white/10">
+      <div class="text-4xl font-bold mb-1 text-brand-500">1200+</div>
+      <div class="text-sm opacity-80 uppercase tracking-wide">Happy Students</div>
+    </div>
+    <div class="p-4 border-l border-white/10">
+      <div class="text-4xl font-bold mb-1 text-brand-500">50k+</div>
+      <div class="text-sm opacity-80 uppercase tracking-wide">Meals Delivered</div>
+    </div>
+    <div class="p-4 border-l border-white/10">
+      <div class="text-4xl font-bold mb-1 text-brand-500">4.8</div>
+      <div class="text-sm opacity-80 uppercase tracking-wide">App Rating</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. How It Works -->
+<section id="how-it-works" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-brand-600 font-bold tracking-wide uppercase mb-2">Simple Process</h2>
+      <h3 class="text-3xl md:text-4xl font-bold text-gray-900">How Smart Tiffin Works</h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+      <!-- Connector Line (Desktop Only) -->
+      <div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-1 bg-gray-100 -z-10"></div>
+
+      <!-- Step 1 -->
+      <div class="text-center group">
+        <div class="w-24 h-24 mx-auto bg-white border-4 border-brand-100 rounded-full flex items-center justify-center text-3xl text-brand-500 mb-6 shadow-lg group-hover:border-brand-500 group-hover:scale-110 transition duration-300">
+          <i class="fas fa-search"></i>
+        </div>
+        <h4 class="text-xl font-bold text-gray-900 mb-3">1. Choose a Cook</h4>
+        <p class="text-gray-500 leading-relaxed px-4">Browse profiles of verified home cooks in your area. Check menus, reviews, and prices.</p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="text-center group">
+        <div class="w-24 h-24 mx-auto bg-white border-4 border-brand-100 rounded-full flex items-center justify-center text-3xl text-brand-500 mb-6 shadow-lg group-hover:border-brand-500 group-hover:scale-110 transition duration-300">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h4 class="text-xl font-bold text-gray-900 mb-3">2. Subscribe Plan</h4>
+        <p class="text-gray-500 leading-relaxed px-4">Select a weekly or monthly meal plan. Customize your preferences (Veg/Non-Veg).</p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="text-center group">
+        <div class="w-24 h-24 mx-auto bg-white border-4 border-brand-100 rounded-full flex items-center justify-center text-3xl text-brand-500 mb-6 shadow-lg group-hover:border-brand-500 group-hover:scale-110 transition duration-300">
+          <i class="fas fa-motorcycle"></i>
+        </div>
+        <h4 class="text-xl font-bold text-gray-900 mb-3">3. Enjoy Delivery</h4>
+        <p class="text-gray-500 leading-relaxed px-4">Get hot meals delivered to your doorstep. Track your tiffin live on the map.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Features Grid -->
+<section id="features" class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-brand-600 font-bold tracking-wide uppercase mb-2">Why Us?</h2>
+      <h3 class="text-3xl md:text-4xl font-bold text-gray-900">Features you'll love</h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Feature Card 1 -->
+      <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-transparent hover:border-brand-200">
+        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xl mb-6">
+          <i class="fas fa-carrot"></i>
+        </div>
+        <h4 class="text-xl font-bold mb-3">Healthy & Fresh</h4>
+        <p class="text-gray-500">Meals prepared with fresh ingredients, less oil, and zero preservatives. Just like mom makes.</p>
+      </div>
+
+      <!-- Feature Card 2 -->
+      <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-transparent hover:border-brand-200">
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 text-xl mb-6">
+          <i class="fas fa-map-marked-alt"></i>
+        </div>
+        <h4 class="text-xl font-bold mb-3">Live Tracking</h4>
+        <p class="text-gray-500">Know exactly where your food is. Real-time GPS tracking from the kitchen to your hostel.</p>
+      </div>
+
+      <!-- Feature Card 3 -->
+      <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-transparent hover:border-brand-200">
+        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 text-xl mb-6">
+          <i class="fas fa-brain"></i>
+        </div>
+        <h4 class="text-xl font-bold mb-3">AI Diet Planner</h4>
+        <p class="text-gray-500">Our smart AI suggests meal plans based on your fitness goals (Weight Loss, Muscle Gain).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Testimonials -->
+<section id="testimonials" class="py-24 bg-white overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">What Students Say</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Review 1 -->
+      <div class="bg-gray-50 p-8 rounded-2xl relative">
+        <i class="fas fa-quote-left text-4xl text-brand-200 absolute top-4 left-4"></i>
+        <p class="text-gray-600 mb-6 relative z-10 italic">"The mess food was terrible. Smart Tiffin saved me! I order from Anita's Kitchen, and it tastes exactly like home."</p>
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
+            <img src="https://i.pravatar.cc/150?img=11" alt="Student" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h5 class="font-bold text-gray-900">Rahul Sharma</h5>
+            <p class="text-xs text-gray-500">Engineering Student</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 2 -->
+      <div class="bg-gray-50 p-8 rounded-2xl relative">
+        <i class="fas fa-quote-left text-4xl text-brand-200 absolute top-4 left-4"></i>
+        <p class="text-gray-600 mb-6 relative z-10 italic">"I love the flexibility. I can pause my subscription when I go home for weekends. The AI diet suggestions are a bonus!"</p>
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
+            <img src="https://i.pravatar.cc/150?img=5" alt="Student" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h5 class="font-bold text-gray-900">Priya Patel</h5>
+            <p class="text-xs text-gray-500">Medical Student</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 3 -->
+      <div class="bg-gray-50 p-8 rounded-2xl relative">
+        <i class="fas fa-quote-left text-4xl text-brand-200 absolute top-4 left-4"></i>
+        <p class="text-gray-600 mb-6 relative z-10 italic">"Highly recommended for anyone living in hostels. Affordable prices and the delivery is always on time."</p>
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
+            <img src="https://i.pravatar.cc/150?img=13" alt="Student" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h5 class="font-bold text-gray-900">Amit Verma</h5>
+            <p class="text-xs text-gray-500">MBA Student</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Call to Action -->
+<section class="py-20">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="bg-gradient-to-r from-brand-600 to-brand-500 rounded-3xl p-10 md:p-16 text-center text-white shadow-2xl relative overflow-hidden">
+      <!-- Decorative Circles -->
+      <div class="absolute top-0 left-0 w-64 h-64 bg-white opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+      <div class="absolute bottom-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full translate-x-1/2 translate-y-1/2"></div>
+
+      <h2 class="text-3xl md:text-5xl font-bold mb-6 relative z-10">Ready to taste the difference?</h2>
+      <p class="text-brand-100 text-lg mb-8 max-w-2xl mx-auto relative z-10">Join thousands of happy students enjoying healthy, homemade meals every day.</p>
+      <div class="relative z-10">
+        <a href="/register" class="inline-block bg-white text-brand-600 font-bold px-10 py-4 rounded-full shadow-lg hover:bg-gray-100 transition transform hover:-translate-y-1">
+          Get Started for Free
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Footer -->
+<footer class="bg-gray-900 text-white border-t border-gray-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="col-span-1 md:col-span-2">
+        <span class="text-2xl font-bold tracking-tight">Smart<span class="text-brand-500">Tiffin</span></span>
+        <p class="mt-4 text-gray-400 text-sm leading-relaxed max-w-xs">
+          Empowering home cooks and providing healthy meals to students. A revolution in the tiffin service industry.
+        </p>
+      </div>
+      <div>
+        <h4 class="font-bold mb-4 uppercase text-sm tracking-wider text-gray-500">Quick Links</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#" class="hover:text-brand-500 transition">About Us</a></li>
+          <li><a href="#" class="hover:text-brand-500 transition">Our Cooks</a></li>
+          <li><a href="#" class="hover:text-brand-500 transition">Pricing</a></li>
+          <li><a href="#" class="hover:text-brand-500 transition">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold mb-4 uppercase text-sm tracking-wider text-gray-500">Contact</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><i class="fas fa-envelope mr-2"></i> support@smarttiffin.com</li>
+          <li><i class="fas fa-phone mr-2"></i> +91 98765 43210</li>
+          <li><i class="fas fa-map-marker-alt mr-2"></i> Mumbai, India</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+      <p>&copy; 2025 Smart Tiffin Group 25. All rights reserved.</p>
+      <div class="flex space-x-6 mt-4 md:mt-0">
+        <a href="#" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

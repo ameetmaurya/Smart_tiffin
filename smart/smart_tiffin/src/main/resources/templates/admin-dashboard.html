@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Admin Panel - Smart Tiffin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-800 text-gray-100 font-sans">
+
+<!-- Top Navbar -->
+<nav class="bg-gray-900 p-4 border-b border-gray-700">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <i class="fas fa-user-shield text-red-500 text-2xl"></i>
+      <h1 class="text-xl font-bold tracking-wider">ADMIN PANEL</h1>
+    </div>
+    <a href="/logout" class="text-gray-400 hover:text-white transition">Logout</a>
+  </div>
+</nav>
+
+<div class="container mx-auto p-8">
+
+  <!-- SECTION 1: STATISTICS CARDS -->
+  <h2 class="text-2xl font-bold mb-6 text-gray-300">System Overview</h2>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+    <!-- Card 1: Users -->
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg border-l-4 border-blue-500">
+      <div class="flex justify-between items-center">
+        <div>
+          <p class="text-gray-400 text-sm">Total Users</p>
+          <h3 class="text-3xl font-bold" th:text="${stats[0]}">0</h3>
+        </div>
+        <i class="fas fa-users text-blue-500 text-4xl opacity-50"></i>
+      </div>
+    </div>
+
+    <!-- Card 2: Orders -->
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg border-l-4 border-green-500">
+      <div class="flex justify-between items-center">
+        <div>
+          <p class="text-gray-400 text-sm">Total Orders</p>
+          <h3 class="text-3xl font-bold" th:text="${stats[1]}">0</h3>
+        </div>
+        <i class="fas fa-shopping-bag text-green-500 text-4xl opacity-50"></i>
+      </div>
+    </div>
+
+    <!-- Card 3: Plans -->
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg border-l-4 border-yellow-500">
+      <div class="flex justify-between items-center">
+        <div>
+          <p class="text-gray-400 text-sm">Active Menus</p>
+          <h3 class="text-3xl font-bold" th:text="${stats[2]}">0</h3>
+        </div>
+        <i class="fas fa-utensils text-yellow-500 text-4xl opacity-50"></i>
+      </div>
+    </div>
+
+    <!-- Card 4: Revenue -->
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg border-l-4 border-purple-500">
+      <div class="flex justify-between items-center">
+        <div>
+          <p class="text-gray-400 text-sm">Total Revenue</p>
+          <h3 class="text-3xl font-bold">₹<span th:text="${revenue}">0</span></h3>
+        </div>
+        <i class="fas fa-rupee-sign text-purple-500 text-4xl opacity-50"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: USER MANAGEMENT TABLE -->
+  <h2 class="text-2xl font-bold mb-6 text-gray-300">User Management</h2>
+  <div class="bg-gray-700 rounded-lg shadow-lg overflow-hidden">
+    <table class="w-full text-left">
+      <thead class="bg-gray-900 text-gray-400 uppercase text-xs font-bold">
+      <tr>
+        <th class="p-4">ID</th>
+        <th class="p-4">Name</th>
+        <th class="p-4">Email</th>
+        <th class="p-4">Role</th>
+        <th class="p-4 text-center">Action</th>
+      </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-600 text-sm">
+      <tr th:each="u : ${allUsers}" class="hover:bg-gray-600 transition">
+        <td class="p-4" th:text="${u.id}">1</td>
+        <td class="p-4 font-bold" th:text="${u.name}">John Doe</td>
+        <td class="p-4 text-gray-300" th:text="${u.email}">john@example.com</td>
+        <td class="p-4">
+                            <span class="px-2 py-1 rounded text-xs font-bold"
+                                  th:classappend="${u.role == 'ADMIN' ? 'bg-red-900 text-red-200' : (u.role == 'COOK' ? 'bg-green-900 text-green-200' : 'bg-blue-900 text-blue-200')}"
+                                  th:text="${u.role}">ROLE</span>
+        </td>
+        <td class="p-4 text-center">
+          <a th:if="${u.role != 'ADMIN'}"
+             th:href="@{'/admin/delete-user/' + ${u.id}}"
+             class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold"
+             onclick="return confirm('Are you sure you want to delete this user?');">
+            <i class="fas fa-trash"></i> DELETE
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Register - Smart Tiffin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 flex items-center justify-center h-screen font-sans">
+
+<div class="bg-white p-8 rounded-2xl shadow-xl w-96 border border-gray-100">
+  <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">Create Account</h2>
+  <p class="text-center text-gray-500 mb-6 text-sm">Join the healthy food revolution</p>
+
+  <form action="/register" method="post" th:object="${user}" onsubmit="return validateForm()">
+
+    <!-- Name -->
+    <div class="mb-4 relative">
+      <i class="fas fa-user absolute left-3 top-3 text-gray-400"></i>
+      <input type="text" th:field="*{name}" placeholder="Full Name" required
+             class="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none transition">
+    </div>
+
+    <!-- Email -->
+    <div class="mb-4 relative">
+      <i class="fas fa-envelope absolute left-3 top-3 text-gray-400"></i>
+      <input type="email" th:field="*{email}" placeholder="Email Address" required
+             class="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none transition">
+    </div>
+
+    <!-- Password -->
+    <div class="mb-2 relative">
+      <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
+      <input type="password" id="password" th:field="*{password}" placeholder="Password (min 6 chars)" required
+             class="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none transition">
+      <i class="fas fa-eye absolute right-3 top-3 text-gray-400 cursor-pointer hover:text-orange-600 transition"
+         id="togglePass1" onclick="toggleVisibility('password', 'togglePass1')"></i>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="mb-2 relative">
+      <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required
+             class="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none transition">
+      <i class="fas fa-eye absolute right-3 top-3 text-gray-400 cursor-pointer hover:text-orange-600 transition"
+         id="togglePass2" onclick="toggleVisibility('confirmPassword', 'togglePass2')"></i>
+    </div>
+
+    <!-- Error Messages -->
+    <p id="lengthError" class="text-red-500 text-xs mb-2 hidden"><i class="fas fa-times-circle mr-1"></i> Password must be at least 6 characters.</p>
+    <p id="matchError" class="text-red-500 text-xs mb-4 hidden"><i class="fas fa-times-circle mr-1"></i> Passwords do not match.</p>
+
+    <!-- Role -->
+    <div class="mb-6 relative">
+      <i class="fas fa-user-tag absolute left-3 top-3 text-gray-400"></i>
+      <select th:field="*{role}" class="w-full pl-10 pr-3 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-orange-500 outline-none transition">
+        <option value="STUDENT">Student</option>
+        <option value="COOK">Home Cook (Bai)</option>
+        <option value="DELIVERY">Delivery Partner</option>
+      </select>
+    </div>
+
+    <button type="submit" class="w-full bg-orange-600 text-white font-bold py-2.5 rounded-lg hover:bg-orange-700 transition shadow-lg transform hover:-translate-y-0.5">
+      Sign Up
+    </button>
+  </form>
+
+  <p class="mt-6 text-center text-sm text-gray-600">
+    Already have an account? <a href="/login" class="text-orange-600 font-bold hover:underline">Log in</a>
+  </p>
+</div>
+
+<!-- JavaScript for Validation & Eye Icon -->
+<script>
+  function toggleVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+
+      if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+      } else {
+          input.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+      }
+  }
+
+  function validateForm() {
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      const lengthErr = document.getElementById('lengthError');
+      const matchErr = document.getElementById('matchError');
+
+      let isValid = true;
+
+      // Check Length
+      if (password.length < 6) {
+          lengthErr.classList.remove('hidden');
+          document.getElementById('password').classList.add('border-red-500');
+          isValid = false;
+      } else {
+          lengthErr.classList.add('hidden');
+          document.getElementById('password').classList.remove('border-red-500');
+      }
+
+      // Check Match
+      if (password !== confirm) {
+          matchErr.classList.remove('hidden');
+          document.getElementById('confirmPassword').classList.add('border-red-500');
+          isValid = false;
+      } else {
+          matchErr.classList.add('hidden');
+          document.getElementById('confirmPassword').classList.remove('border-red-500');
+      }
+
+      return isValid;
+  }
+</script>
+
+</body>
+</html>

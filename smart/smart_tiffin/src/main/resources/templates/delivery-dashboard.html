@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Delivery Partner - Smart Tiffin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-900 text-white">
+
+<!-- Mobile-First Navbar -->
+<nav class="bg-gray-800 p-4 sticky top-0 z-50 shadow-lg border-b border-gray-700">
+  <div class="flex justify-between items-center">
+    <h1 class="text-xl font-bold text-orange-500">
+      <i class="fas fa-shipping-fast mr-2"></i>Delivery Panel
+    </h1>
+    <a href="/logout" class="text-xs bg-gray-700 px-3 py-1 rounded">Logout</a>
+  </div>
+  <p class="text-xs text-gray-400 mt-1">
+    Logged in as: <span th:text="${user.name}">Partner</span>
+  </p>
+</nav>
+
+<div class="p-4 max-w-md mx-auto space-y-6">
+
+  <!-- ================= READY FOR PICKUP ================= -->
+  <div>
+    <h2 class="text-lg font-bold mb-3 border-l-4 border-green-500 pl-3">
+      Ready for Pickup
+    </h2>
+
+    <div th:if="${readyOrders.empty}"
+         class="bg-gray-800 p-6 rounded-lg text-center text-gray-500 text-sm">
+      No orders ready at the kitchens yet.
+    </div>
+
+    <div class="space-y-3">
+      <div th:each="order : ${readyOrders}"
+           class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700">
+
+        <h3 class="font-bold" th:text="${order.plan.planName}">Meal</h3>
+        <p class="text-sm text-gray-400">
+          Pickup: <b th:text="${order.plan.cook.name}">Cook</b>
+        </p>
+
+        <div class="bg-gray-700 p-2 rounded text-xs mt-2">
+          <p class="font-bold" th:text="${order.student.name}">Student</p>
+          <p th:text="${order.student.address}">Address</p>
+        </div>
+
+        <p class="mt-2 text-green-400 font-bold">
+          🔐 OTP: <span th:text="${order.deliveryOtp}">1234</span>
+        </p>
+
+        <a th:href="@{'/delivery/pickup/' + ${order.id}}"
+           class="block mt-3 bg-green-600 hover:bg-green-700 text-center py-3 rounded font-bold">
+          <i class="fas fa-box-open mr-2"></i> PICKUP ORDER
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= IN TRANSIT ================= -->
+  <div>
+    <h2 class="text-lg font-bold mb-3 border-l-4 border-blue-500 pl-3">
+      In Transit
+    </h2>
+
+    <div th:if="${activeDeliveries.empty}"
+         class="bg-gray-800 p-4 rounded-lg text-center text-gray-500 text-sm">
+      You have no active deliveries.
+    </div>
+
+    <div class="space-y-4">
+      <div th:each="order : ${activeDeliveries}"
+           class="bg-blue-900 p-4 rounded-lg border border-blue-700 shadow">
+
+        <h3 class="font-bold text-lg">
+          Order #<span th:text="${order.id}"></span>
+        </h3>
+        <p class="text-sm text-blue-200">
+          Student: <span th:text="${order.student.name}">Name</span>
+        </p>
+
+        <!-- 🔐 OTP VERIFICATION -->
+        <div class="mt-4 bg-yellow-50 text-gray-900 p-3 rounded">
+
+          <p class="text-sm font-bold mb-2">
+            Enter OTP from Student
+          </p>
+
+          <!-- ERROR MESSAGE -->
+          <div th:if="${errorMessage}" class="text-red-600 font-bold mb-2" th:text="${errorMessage}"></div>
+
+          <!-- SUCCESS MESSAGE -->
+          <div th:if="${successMessage}" class="text-green-600 font-bold mb-2" th:text="${successMessage}"></div>
+
+          <form action="/delivery/complete" method="post" class="flex gap-2">
+            <input type="hidden" name="orderId" th:value="${order.id}">
+
+            <input type="text"
+                   name="otp"
+                   placeholder="OTP"
+                   required
+                   class="flex-1 p-2 rounded border">
+
+            <button type="submit"
+                    class="bg-green-600 hover:bg-green-700 text-white px-4 rounded font-bold">
+              Deliver
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
